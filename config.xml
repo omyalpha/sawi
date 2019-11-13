@@ -20,7 +20,7 @@
 	
 	<!-- for Android (you will find one in res/xml) -->
 	<feature name="SocialSharing">
-	  <param name="android-package" value="nl.xservices.plugins.SocialSharing" />
+	  <param name="android-package" value="nl.xservices.plugins.SocialSharing" version="5.4.0" />
 	</feature>
 	
 	<!-- for Windows Phone -->
