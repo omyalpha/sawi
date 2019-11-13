@@ -574,3 +574,25 @@ myApp.onPageInit('forgot-password', function(page) {
 	});
 
 });
+
+/*
+|------------------------------------------------------------------------------
+| Splash Screen
+|------------------------------------------------------------------------------
+*/
+
+myApp.onPageInit('splash-screen', function(page) {
+	
+		/* 3 seconds after logo animation is completed, open walkthrough screen. */
+		setTimeout(function(){
+			mainView.router.load({
+				url: 'home.html'
+			});
+		}, 3000);
+
+	/* 1 second after page is loaded, show preloader. */
+	setTimeout(function() {
+		$$('.page[data-page=splash-screen] .splash-preloader').css('opacity', 1);
+	}, 1000);
+
+});
