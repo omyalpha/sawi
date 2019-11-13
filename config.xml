@@ -28,7 +28,7 @@
 	<feature name="SocialSharing">
 	  <param name="wp-package" value="SocialSharing"/>
 	</feature>
-
+	<!--
 	<plugin name="cordova-plugin-x-socialsharing" source="npm" />
 	<plugin name="cordova-plugin-whitelist" source="npm" />
 	<plugin name="cordova-plugin-splashscreen" source="npm" />
@@ -45,4 +45,5 @@
 	
 	<splash platform="windows" src="img/splash/windows/1152x1920.png" width="1152" height="1920"/>
 	<preference name="SplashScreenDelay" value="5000" />
+	-->
 </widget>
