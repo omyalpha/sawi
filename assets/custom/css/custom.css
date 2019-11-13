@@ -1,0 +1,11 @@
+.pull-right {
+	float: right !important;
+	position: absolute;
+	right: 30px;
+}
+
+.pull-left {
+	float: left !important;
+	position: absolute;
+	left: 60px;
+}
