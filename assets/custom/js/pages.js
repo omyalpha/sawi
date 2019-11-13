@@ -47,7 +47,7 @@ myApp.onPageInit('*', function(page) {
 			},
 			error:function(XMLHttpRequest,textStatus,errorThrown){
 				var errormsg=XMLHttpRequest.responseText;
-				myApp.alert(errormsg);
+				myApp.alert(errormsg+":"+textStatus);
 			}
 		});
 		console.log('username: '+localStorage.getItem("username"));
