@@ -1,0 +1,112 @@
+<div data-page="createtrans" class="page">
+	<!-- Begin: Navbar -->
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="left">
+				<a href="#" class="link icon-only back">
+					<i class="icon icon-back"></i>
+				</a>
+			</div>
+			<div class="center">Submit Transaction</div>
+		</div>
+	</div>
+	<!-- End: Navbar -->
+	<!-- Begin: Page Content -->
+  <div class="page-content">
+		<form name="login" action="#" enctype="multipart/form-data" id="submitTransForm">
+			<div class="content-block-title">Recipient Information</div>
+			<div class="list-block no-hairlines">
+				<div class="item-content">
+					<div class="item-inner">
+					<div class="item-title">Name</div>
+						<div class="item-input">
+							<input type="text" name="rname" />
+						</div>
+					</div>
+				</div>
+				<div class="item-content">
+					<div class="item-inner">
+					<div class="item-title">Nationality</div>
+						<div class="item-input">
+							<input type="text" name="rnationality" />
+						</div>
+					</div>
+				</div>
+				<div class="item-content">
+					<div class="item-inner">
+					<div class="item-title">Address</div>
+						<div class="item-input">
+							<input type="text" name="raddress" />
+						</div>
+					</div>
+				</div>
+				<div class="item-content">
+					<div class="item-inner">
+					<div class="item-title">Contact 1</div>
+						<div class="item-input">
+							<input type="text" name="rphone1" />
+						</div>
+					</div>
+				</div>
+				<div class="item-content">
+					<div class="item-inner">
+					<div class="item-title">Contact 2</div>
+						<div class="item-input">
+							<input type="text" name="rphone2" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="content-block-title">Transaction Information</div>
+			<div class="list-block no-hairlines">	
+				<div class="item-content">
+					<div class="item-inner">
+					<div class="item-title">Payment Type</div>
+						<select name="payment" id="payment">
+							<option value="1">Bank</option>
+							<option value="2">Cash</option>
+						</select>
+					</div>
+				</div>
+				<div class="item-content">
+					<div class="item-inner">
+						<div class="item-title">Settlement Type</div>
+						<select name="settlement" id="settlement">
+							<option value="1">Bank</option>
+							<option value="2">Cash</option>
+						</select>
+					</div>
+				</div>
+				<div class="item-content">
+					<div class="item-inner">
+					<div class="item-title">Send</div>
+						<div class="item-input">
+							<input type="text" id="payablenow2" name="payablenow" />
+						</div>
+					</div>
+				</div>
+				<div class="item-content">
+					<div class="item-inner">
+					<div class="item-title">Receive</div>
+						<div class="item-input">
+							<input type="text" id="tobereceived2" name="tobereceived" />
+						</div>
+					</div>
+				</div>
+				<div class="item-content">
+					<div class="item-inner">
+					<div class="item-title">Notes</div>
+						<div class="item-input">
+							<input type="text" name="notes" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="content-block">
+				<button type="submit" class="button button-big button-block button-fill submitTransBtn">Submit Transaction</button>
+			</div>
+		</form>
+
+	</div>
+	<!-- End: Page Content -->
+</div>
