@@ -47,7 +47,7 @@ myApp.onPageInit('*', function(page) {
 			},
 			error:function(XMLHttpRequest,textStatus,errorThrown){
 				var errormsg=XMLHttpRequest.responseText;
-				myApp.alert(errormsg+":"+textStatus);
+				myApp.alert(errormsg);
 			}
 		});
 		console.log('username: '+localStorage.getItem("username"));
@@ -243,101 +243,141 @@ myApp.onPageInit('home', function(page) {
 	});
 	
 	// reverse - payable now
-	$('#payablenow').on('input', function() {
-		var sending=$('#SendingBranch').val();
-		var receiving=$('#ReceivingBranch').val();
-		var payablenow=$('#payablenow').val();
-		var receivecurrency=$('#rcurrency').val();
-		var sendcurrency=$('#scurrency').val();
-		$.ajax({
-			beforeSend: function() { myApp.showIndicator(); },
-			complete: function(){ myApp.hideIndicator(); },
-			url: 'http://webhosting.sd/sawi/php/reverse.php',
-			dataType: 'text',
-			type: 'GET',
-			data: { sending: sending, receiving: receiving, payablenow: payablenow, receivecurrency: receivecurrency, sendcurrency: sendcurrency },
-			success: function(data) {
-				console.log(data);
-				var array = data.split("xx");
-				var tobereceived=array[3];
-				var rate=array[4];
-				
-				$('#tobereceived').val(tobereceived);
-				$('#rate').val(rate);
-				
-				},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert(errorThrown);
-				//bootbox.alert('<i class="fa fa-times font-red"></i> '+errorThrown);
-				$('#payablenow').val('');
+	setTimeout(function(){
+		$('#payablenow').on('input', function() {
+			var sending=$('#SendingBranch').val();
+			var receiving=$('#ReceivingBranch').val();
+			var payablenow=$('#payablenow').val();
+			var receivecurrency=$('#rcurrency').val();
+			var sendcurrency=$('#scurrency').val();
+			if (!isNaN(payablenow)) {
+				$.ajax({
+					beforeSend: function() { myApp.showIndicator(); },
+					complete: function(){ myApp.hideIndicator(); },
+					url: 'http://webhosting.sd/sawi/php/reverse.php',
+					dataType: 'text',
+					type: 'GET',
+					data: { sending: sending, receiving: receiving, payablenow: payablenow, receivecurrency: receivecurrency, sendcurrency: sendcurrency },
+					success: function(data) {
+						console.log(data);
+						var array = data.split("xx");
+						var amount=array[2];
+						localStorage.setItem("amount",amount);
+						var tobereceived=array[3];
+						var rate=array[4];
+						
+						if ($('#payablenow').val()!="") {
+							$('#tobereceived').val(tobereceived);
+							$('#rate').val(rate);
+						}
+						
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						alert(errorThrown);
+						//bootbox.alert('<i class="fa fa-times font-red"></i> '+errorThrown);
+						$('#payablenow').val('');
+						$('#tobereceived').val('');
+					},
+					beforeSend: function(){
+						$(".proceedBtn").attr("disabled", true);
+					},
+					complete: function(){
+						$(".proceedBtn").attr("disabled", false);
+					}
+				});
+			} else {
 				$('#tobereceived').val('');
-			},
-			beforeSend: function(){
-				$(".proceedBtn").attr("disabled", true);
-			},
-			complete: function(){
-				$(".proceedBtn").attr("disabled", false);
+				$('#payablenow').val('');
 			}
 		});
-	});
+	},500);
 
 	// reverse receive - tobereceived
-	$('#tobereceived').on('input', function() {
-		var sending=$('#SendingBranch').val();
-		var receiving=$('#ReceivingBranch').val();
-		var tobereceived=$('#tobereceived').val();
-		var receivecurrency=$('#rcurrency').val();
-		var sendcurrency=$('#scurrency').val();
-		$.ajax({
-			url: 'ajax/reversereceive.php',
-			dataType: 'text',
-			type: 'GET',
-			data: { sending: sending, receiving: receiving, tobereceived: tobereceived, receivecurrency: receivecurrency, sendcurrency: sendcurrency },
-			success: function(data) {
-				console.log(data);
-				array = data.split("xx");
-				var payablenow=array[3];
-				var rate=array[4];
-				var sendcurrency=array[6];
-				var receivecurrency=array[7];
-				
-				$('#rate').val(rate);
-				$('#payablenow').val(payablenow);
-				
-				},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert(errorThrown);
-				//bootbox.alert('<i class="fa fa-times font-red"></i> '+errorThrown);
-				$('#payablenow').val('');
+	setTimeout(function(){
+		$('#tobereceived').on('input', function() {
+			var sending=$('#SendingBranch').val();
+			var receiving=$('#ReceivingBranch').val();
+			var tobereceived=$('#tobereceived').val();
+			var receivecurrency=$('#rcurrency').val();
+			var sendcurrency=$('#scurrency').val();
+			
+			if (!isNaN(tobereceived)) {
+				$.ajax({
+					url: 'http://webhosting.sd/sawi/php/reversereceive.php',
+					dataType: 'text',
+					type: 'GET',
+					data: { sending: sending, receiving: receiving, tobereceived: tobereceived, receivecurrency: receivecurrency, sendcurrency: sendcurrency },
+					success: function(data) {
+						console.log(data);
+						var array = data.split("xx");
+						var amount=array[2];
+						localStorage.setItem("amount",amount);
+						var payablenow=array[3];
+						var rate=array[4];
+						var sendcurrency=array[6];
+						var receivecurrency=array[7];
+						
+						if ($('#tobereceived').val()!="") {
+							$('#rate').val(rate);
+							$('#payablenow').val(payablenow);
+						}
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						alert(errorThrown);
+						//bootbox.alert('<i class="fa fa-times font-red"></i> '+errorThrown);
+						$('#payablenow').val('');
+						$('#tobereceived').val('');
+					},
+					beforeSend: function(){
+						$(".proceedBtn").attr("disabled", true);
+					},
+					complete: function(){
+						$(".proceedBtn").attr("disabled", false);
+					}
+				});
+			} else {
 				$('#tobereceived').val('');
-			},
-			beforeSend: function(){
-				$(".proceedBtn").attr("disabled", true);
-			},
-			complete: function(){
-				$(".proceedBtn").attr("disabled", false);
+				$('#payablenow').val('');
 			}
 		});
-	});
+	},500);
+	
 	$$(".proceedBtn").on('click', function(e){
 		e.preventDefault();
 		var sending=$('#SendingBranch').val();
 		var receiving=$('#ReceivingBranch').val();
+		var sendingname=$('#SendingBranch').text();
+		var receivingname=$('#ReceivingBranch').text();
 		var tobereceived=$('#tobereceived').val();
 		var payablenow=$('#payablenow').val();
 		var receivecurrency=$('#rcurrency').val();
 		var sendcurrency=$('#scurrency').val();
 		
-		localStorage.setItem("SendingBranch",sending);
-		localStorage.setItem("ReceivingBranch",receiving);
-		localStorage.setItem("tobereceived",tobereceived);
-		localStorage.setItem("payablenow",payablenow);
-		localStorage.setItem("receivecurrency",receivecurrency);
-		localStorage.setItem("sendcurrency",sendcurrency);
+		// get selected options
+		//var selsen = $('#SendingBranch');
+		//var selrec = $('#ReceivingBranch');
+		//var sendingname= selsen.options[selsen.selectedIndex].text;
+		//var receivingname= selrec.options[selrec.selectedIndex].text;
 		
-		mainView.router.load({
-			url: 'createtrans.html'
-		});
+		var sendingname= $("#SendingBranch option:selected").text();
+		var receivingname= $("#ReceivingBranch option:selected").text();
+		
+		if (tobereceived!="" && payablenow!="") {
+			localStorage.setItem("SendingBranch",sending);
+			localStorage.setItem("ReceivingBranch",receiving);
+			localStorage.setItem("SendingBranchName",sendingname);
+			localStorage.setItem("ReceivingBranchName",receivingname);
+			localStorage.setItem("tobereceived",tobereceived);
+			localStorage.setItem("payablenow",payablenow);
+			localStorage.setItem("receivecurrency",receivecurrency);
+			localStorage.setItem("sendcurrency",sendcurrency);
+			
+			mainView.router.load({
+				url: 'createtrans.html'
+			});
+		} else {
+			alert('Please enter valid amounts');
+		}
 	});
 });
 
@@ -351,7 +391,186 @@ myApp.onPageInit('createtrans', function(page) {
 
 	$('#tobereceived2').val(localStorage.getItem("tobereceived"));
 	$('#payablenow2').val(localStorage.getItem("payablenow"));
+	$('.rcurrency').html(localStorage.getItem("receivecurrency"));
+	$('.scurrency').html(localStorage.getItem("sendcurrency"));
+	$('.sendingdiv').text(localStorage.getItem("SendingBranchName"));
+	$('.receivingdiv').text(localStorage.getItem("ReceivingBranchName"));
 
+	// reverse - payable now
+	setTimeout(function(){
+		$('#payablenow2').on('input', function() {
+			var sending=localStorage.getItem("SendingBranch");
+			var receiving=localStorage.getItem("ReceivingBranch");
+			var payablenow=$('#payablenow2').val();
+			var receivecurrency=localStorage.getItem("receivecurrency");
+			var sendcurrency=localStorage.getItem("sendcurrency");
+			var payment=$('#payment').val();
+			var settlement=$('#settlement').val();
+			if (!isNaN(payablenow)) {
+				$.ajax({
+					beforeSend: function() { myApp.showIndicator(); },
+					complete: function(){ myApp.hideIndicator(); },
+					url: 'http://webhosting.sd/sawi/php/reverse.php',
+					dataType: 'text',
+					type: 'GET',
+					data: { sending: sending, receiving: receiving, payablenow: payablenow, receivecurrency: receivecurrency, sendcurrency: sendcurrency, payment: payment, settlement: settlement },
+					success: function(data) {
+						console.log(data);
+						var array = data.split("xx");
+						var amount=array[2];
+						localStorage.setItem("amount",amount);
+						var tobereceived=array[3];
+						var rate=array[4];
+						
+						if ($('#payablenow2').val()!="") {
+							$('#tobereceived2').val(tobereceived);
+							$('#rate').val(rate);
+						}
+						
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						alert(errorThrown);
+						//bootbox.alert('<i class="fa fa-times font-red"></i> '+errorThrown);
+						$('#payablenow2').val('');
+						$('#tobereceived2').val('');
+					},
+					beforeSend: function(){
+						$(".submitTransBtn").attr("disabled", true);
+					},
+					complete: function(){
+						$(".submitTransBtn").attr("disabled", false);
+					}
+				});
+			} else {
+				$('#tobereceived2').val('');
+				$('#payablenow2').val('');
+			}
+		});
+	},500);
+
+	// reverse receive - tobereceived
+	setTimeout(function(){
+		$('#tobereceived2').on('input', function() {
+			var sending=localStorage.getItem("SendingBranch");
+			var receiving=localStorage.getItem("ReceivingBranch");
+			var tobereceived=$('#tobereceived2').val();
+			var receivecurrency=localStorage.getItem("receivecurrency");
+			var sendcurrency=localStorage.getItem("sendcurrency");
+			var payment=$('#payment').val();
+			var settlement=$('#settlement').val();
+			
+			if (!isNaN(tobereceived)) {
+				$.ajax({
+					url: 'http://webhosting.sd/sawi/php/reversereceive.php',
+					dataType: 'text',
+					type: 'GET',
+					data: { sending: sending, receiving: receiving, tobereceived: tobereceived, receivecurrency: receivecurrency, sendcurrency: sendcurrency, payment: payment, settlement: settlement },
+					success: function(data) {
+						console.log(data);
+						var array = data.split("xx");
+						var amount=array[2];
+						localStorage.setItem("amount",amount);
+						var payablenow=array[3];
+						var rate=array[4];
+						var sendcurrency=array[6];
+						var receivecurrency=array[7];
+						
+						if ($('#tobereceived2').val()!="") {
+							$('#rate').val(rate);
+							$('#payablenow2').val(payablenow);
+						}
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						alert(errorThrown);
+						//bootbox.alert('<i class="fa fa-times font-red"></i> '+errorThrown);
+						$('#payablenow2').val('');
+						$('#tobereceived2').val('');
+					},
+					beforeSend: function(){
+						$(".submitTransBtn").attr("disabled", true);
+					},
+					complete: function(){
+						$(".submitTransBtn").attr("disabled", false);
+					}
+				});
+			} else {
+				$('#tobereceived2').val('');
+				$('#payablenow2').val('');
+			}
+		});
+	},500);
+	
+	// payment, settlement
+	setTimeout(function(){
+		$('#payment, #settlement').on('change', function() {		
+			var sending=localStorage.getItem("SendingBranch");
+			var receiving=localStorage.getItem("ReceivingBranch");
+			var tobereceived=$('#tobereceived2').val();
+			var receivecurrency=localStorage.getItem("receivecurrency");
+			var sendcurrency=localStorage.getItem("sendcurrency");
+			var payment=$('#payment').val();
+			var settlement=$('#settlement').val();
+			var amount=localStorage.getItem("amount");
+			
+			$.ajax({
+				url: 'http://webhosting.sd/sawi/php/forward.php',
+				dataType: 'text',
+				type: 'GET',
+				data: { sending: sending, receiving: receiving, payment: payment, settlement: settlement, amount: amount, receivecurrency: receivecurrency, sendcurrency: sendcurrency },
+				success: function(data) {
+					console.log(data);
+					var array = data.split("xx");
+					var payablenow=array[2];
+					var tobereceived=array[3];
+
+					$('#payablenow2').val(payablenow);
+					$('#tobereceived2').val(tobereceived);
+					
+					},
+				error: function(jqXHR, textStatus, errorThrown) {
+					alert(errorThrown);
+					//bootbox.alert('<i class="fa fa-times font-red"></i> '+errorThrown);
+				},
+				beforeSend: function(){
+					$(".submitTransBtn").attr("disabled", true);
+				},
+				complete: function(){
+					$(".submitTransBtn").attr("disabled", false);
+				}
+			});
+		});
+	},500);
+	
+	$$(".submitTransBtn").on('click', function(e){
+		e.preventDefault();
+		if (localStorage.getItem("token") !== null) {
+			var form = $("#submitTransForm");
+			//submit transaction
+			$.ajax({
+				beforeSend: function() { myApp.showIndicator(); },
+				complete: function(){ myApp.hideIndicator(); },
+				type: "GET",
+				url: "http://webhosting.sd/sawi/php/addtrans.php?amount="+localStorage.getItem('amount')+"&token="+localStorage.getItem("token")+"&sending="+localStorage.getItem("SendingBranch")+"&receiving="+localStorage.getItem("ReceivingBranch")+"&sendcurrency="+localStorage.getItem("sendcurrency")+"&receivecurrency="+localStorage.getItem("receivecurrency"),
+				data: form.serialize(), // serializes the form's elements.
+				success: function(data) {
+					localStorage.removeItem("SendingBranch"); // end ongoing transaction
+					myApp.alert('Transaction Submitted!');
+					mainView.router.load({
+						url: 'transactions.html'
+					});
+				},
+				error:function(XMLHttpRequest,textStatus,errorThrown){
+					var errormsg=XMLHttpRequest.responseText;
+					myApp.alert(errormsg);
+				}
+			});
+			
+		} else {
+			mainView.router.load({
+				url: 'signup.html'
+			});
+		}
+	});
 });
 
 /*
@@ -417,7 +636,11 @@ myApp.onPageInit('login', function(page) {
 					$('.onlyloggedin').show();
 					$('.onlyloggedout').hide();
 					console.log("new token:"+data);
-					mainView.loadPage('home.html');
+					if (localStorage.getItem("SendingBranch") !== null) { // there is an ongoing transaction
+						mainView.loadPage('createtrans.html');
+					} else {
+						mainView.loadPage('home.html');
+					}
 				},
 				error:function(XMLHttpRequest,textStatus,errorThrown){
 					var errormsg=XMLHttpRequest.responseText;
@@ -515,7 +738,11 @@ myApp.onPageInit('signup', function(page) {
 					$('.onlyloggedin').show();
 					$('.onlyloggedout').hide();
 					console.log("new token:"+data);
-					mainView.loadPage('home.html');
+					if (localStorage.getItem("SendingBranch") !== null) { // there is an ongoing transaction
+						mainView.loadPage('createtrans.html');
+					} else {
+						mainView.loadPage('home.html');
+					}
 				},
 				error:function(XMLHttpRequest,textStatus,errorThrown){
 					var errormsg=XMLHttpRequest.responseText;
