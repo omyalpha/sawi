@@ -54,7 +54,28 @@ myApp.onPageInit('*', function(page) {
 				var errormsg=XMLHttpRequest.responseText;
 				if (errormsg=="" || errormsg==undefined) {
 					errormsg="Connection Error";
+				} else if (errormsg=="1") { // banned
+					localStorage.removeItem("token");
+					$('.onlyloggedin').hide();
+					$('.onlyloggedout').show();
+					$('.name').text("");
+					$('.username').text("");
+					console.log('logged out');
+					mainView.loadPage('home.html');
+					
+					errormsg="You account has been deactivated, please contact admin";
+				} else if (errorms==2) { // wrong token
+					localStorage.removeItem("token");
+					$('.onlyloggedin').hide();
+					$('.onlyloggedout').show();
+					$('.name').text("");
+					$('.username').text("");
+					console.log('logged out');
+					mainView.loadPage('home.html');
+					
+					errormsg="Wrong token!";
 				}
+				
 				var toast = myApp.toast(errormsg);
 				toast.show();
 			}
@@ -776,7 +797,7 @@ myApp.onPageInit('balance', function(page) {
 					htmlText += '<td class="numeric-cell">'+data[i].rname+'</td>';
 					htmlText += '<td class="numeric-cell">'+data[i].sendcurrency+' '+data[i].payablenow.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'</td>';
 					htmlText += '<td class="numeric-cell">'+data[i].created+'</td>';
-					htmlText += '<td class="numeric-cell">'+data[i].sendcurrency+' '+data[i].owes+'</td>';
+					htmlText += '<td class="numeric-cell">'+data[i].sendcurrency+' '+data[i].owes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'</td>';
 					htmlText += '<td class="numeric-cell"><a href="transdetails.html?id='+data[i].id+'">Details</a></td>';
 					htmlText += '</tr>';
 					$('#translist').append(htmlText);
