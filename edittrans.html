@@ -1,0 +1,155 @@
+<div data-page="edittrans" class="page">
+	<!-- Begin: Navbar -->
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="left">
+				<a href="#" class="link icon-only back">
+					<i class="icon icon-back"></i>
+				</a>
+			</div>
+			<div class="center">Edit Transaction</div>
+		</div>
+	</div>
+	<!-- End: Navbar -->
+	<!-- Begin: Page Content -->
+  <div class="page-content">
+		<div class="profile-header">
+			<div class="chip canceltrans">
+				<div class="chip-media bg-blue">
+					<i class="material-icons">cancel</i>
+				</div>
+				<div class="chip-label">Cancel Transaction</div>
+			</div>
+		</div>
+		
+			<div class="card">
+					<div class="card-content">
+						<div class="card-content-inner">
+							<div class="list-block no-hairlines no-hairlines-between">
+								<div class="content-block-title">Transaction Information</div>
+								<ul>
+									<li>
+										<div class="item-content">
+											<div class="item-inner">
+												<div class="item-title">
+													<i class="fa fa-angle-double-right"></i> Code
+												</div>
+												<div class="pull-middle" id="transactioncode4"></div>
+											</div>
+										</div>
+										<div class="item-content">
+											<div class="item-inner">
+												<div class="item-title">
+													<i class="fa fa-angle-double-right"></i> Sent From
+												</div>
+												<div class="pull-middle" id="sbranchname4"></div>
+											</div>
+										</div>
+										<div class="item-content">
+											<div class="item-inner">
+												<div class="item-title">
+													<i class="fa fa-angle-double-right"></i> Total Sent
+												</div>
+												<div class="pull-middle" id="payablenow4"></div>
+											</div>
+										</div>
+										<div class="item-content">
+											<div class="item-inner">
+												<div class="item-title">
+													<i class="fa fa-angle-double-right"></i> Sent To
+												</div>
+												<div class="pull-middle" id="rbranchname4"></div>
+											</div>
+										</div>
+										<div class="item-content">
+											<div class="item-inner">
+												<div class="item-title">
+													<i class="fa fa-angle-double-right"></i> Total Receive
+												</div>
+												<div class="pull-middle" id="tobereceived4"></div>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+		<form name="editTransForm" action="#" enctype="multipart/form-data" id="editTransForm">
+			<div class="content-block-title">Recipient Information</div>
+			<div class="list-block no-hairlines">
+				<div class="item-content">
+					<div class="item-media">
+						<i class="fa fa-angle-double-right"></i>
+					</div>
+					<div class="item-inner">
+					<div class="item-title">Name</div>
+						<div class="item-input">
+							<input type="text" id="rname4" name="rname" />
+						</div>
+					</div>
+				</div>
+				<div class="item-content">
+					<div class="item-media">
+						<i class="fa fa-angle-double-right"></i>
+					</div>
+					<div class="item-inner">
+					<div class="item-title">Nationality</div>
+						<div class="item-input">
+							<input type="text" id="rnationality4" name="rnationality" />
+						</div>
+					</div>
+				</div>
+				<div class="item-content">
+					<div class="item-media">
+						<i class="fa fa-angle-double-right"></i>
+					</div>
+					<div class="item-inner">
+					<div class="item-title">Address</div>
+						<div class="item-input">
+							<input type="text" id="raddress4" name="raddress" />
+						</div>
+					</div>
+				</div>
+				<div class="item-content">
+					<div class="item-media">
+						<i class="fa fa-angle-double-right"></i>
+					</div>
+					<div class="item-inner">
+					<div class="item-title">Contact 1</div>
+						<div class="item-input">
+							<input type="text" id="rphone14" name="rphone1" />
+						</div>
+					</div>
+				</div>
+				<div class="item-content">
+					<div class="item-media">
+						<i class="fa fa-angle-double-right"></i>
+					</div>
+					<div class="item-inner">
+					<div class="item-title">Contact 2</div>
+						<div class="item-input">
+							<input type="text" id="rphone24" name="rphone2" />
+						</div>
+					</div>
+				</div>
+				<div class="item-content">
+					<div class="item-media">
+						<i class="fa fa-angle-double-right"></i>
+					</div>
+					<div class="item-inner">
+					<div class="item-title">Notes</div>
+						<div class="item-input">
+							<input type="text" id="notes4" name="notes" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="content-block">
+				<button type="submit" class="button button-big button-block button-fill editTransBtn">Edit Transaction</button>
+			</div>
+		</form>
+
+	</div>
+	<!-- End: Page Content -->
+</div>
