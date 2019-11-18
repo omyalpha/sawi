@@ -781,7 +781,12 @@ myApp.onPageInit('balance', function(page) {
 					htmlText += '</tr>';
 					$('#translist').append(htmlText);
 					htmlText='';
-				});				
+				});
+				
+				if (data.length==0) {
+					var toast = myApp.toast('<i class="fa fa-times"></i> Nothing to show here');
+					toast.show();
+				}
 			},
 			error:function(XMLHttpRequest,textStatus,errorThrown){
 				var errormsg=XMLHttpRequest.responseText;
@@ -829,7 +834,12 @@ myApp.onPageInit('transactions', function(page) {
 					htmlText += '</tr>';
 					$('#translist').append(htmlText);
 					htmlText='';
-				});				
+				});
+				
+				if (data.length==0) {
+					var toast = myApp.toast('<i class="fa fa-times"></i> Nothing to show here');
+					toast.show();
+				}
 			},
 			error:function(XMLHttpRequest,textStatus,errorThrown){
 				var errormsg=XMLHttpRequest.responseText;
@@ -1067,7 +1077,11 @@ myApp.onPageInit('messages', function(page) {
 
 					$('#messages').append(htmlText);
 					htmlText='';
-				});				
+				});
+				if (data.length==0) {
+					var toast = myApp.toast('<i class="fa fa-times"></i> Nothing to show here');
+				toast.show();
+				}				
 			},
 			error:function(XMLHttpRequest,textStatus,errorThrown){
 				var errormsg=XMLHttpRequest.responseText;

@@ -837,6 +837,7 @@
 	flex-direction: column;
 	flex-wrap: nowrap;
 	overflow-y: auto;
+	text-align: center;
 }
 
 .page[data-page=login] .page-content > :first-child {
