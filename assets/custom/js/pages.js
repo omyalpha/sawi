@@ -64,7 +64,7 @@ myApp.onPageInit('*', function(page) {
 					mainView.loadPage('home.html');
 					
 					errormsg="You account has been deactivated, please contact admin";
-				} else if (errorms==2) { // wrong token
+				} else if (errormsg=="2") { // wrong token
 					localStorage.removeItem("token");
 					$('.onlyloggedin').hide();
 					$('.onlyloggedout').show();
