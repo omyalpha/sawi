@@ -10,6 +10,205 @@
 	left: 60px;
 }
 
+.pull-middle {
+	float: left !important;
+	position: absolute;
+	left: 120px;
+}
+
 .item-title {
 	color:#01524A !important;
 }
+
+/*
+|------------------------------------------------------------------------------
+| Tranactions details
+|------------------------------------------------------------------------------
+*/
+
+.page[data-page=transdetails] .profile-header {
+	align-items: center;
+	background-color: #2E2B33;
+	background-image: url('../img/bg-user-profile.svg');
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 32px 16px;
+	text-align: center;
+}
+
+.page[data-page=transdetails] .profile-header .user-avatar {
+	border: 3px solid #FFFFFF;
+	height: 80px;
+	width: 80px;
+}
+
+.page[data-page=transdetails] .profile-header .user-name {
+	color: rgba(255, 255, 255, 0.87);
+	margin-bottom: 8px;
+	margin-top: 8px;
+}
+
+.page[data-page=transdetails] .profile-header .user-actions {
+	margin-top: 8px;
+	width: 100%;
+}
+
+.page[data-page=transdetails] .skills-list .skill-title {
+	font-size: 12px;
+	margin-right: 8px;
+	text-align: left;
+	width: 96px;
+}
+
+.page[data-page=transdetails] .skills-list .skill-proficiency {
+	font-size: 12px;
+	margin-left: 8px;
+	text-align: right;
+	width: 16px;
+}
+
+.page[data-page=transdetails] #tab-experience .list-block .item-title {
+	-webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-height: 20px;
+  margin-bottom: 6px;
+  white-space: normal;
+}
+
+.page[data-page=transdetails] #tab-experience .list-block .item-subtitle {
+	-webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-height: 18px;
+  margin-bottom: 6px;
+  white-space: normal;
+}
+
+.page[data-page=transdetails] #tab-portfolio .card .card-content-inner {
+	padding-bottom: 8px;
+	padding-top: 8px;
+}
+
+.page[data-page=transdetails] #tab-portfolio .image-gallery .image-wrapper {
+	margin-bottom: 3px;
+	margin-top: 8px;
+	position: relative;
+}
+
+.page[data-page=transdetails] #tab-portfolio .image-gallery img {
+	width: 100%;
+}
+
+.page[data-page=transdetails] #tab-portfolio .image-gallery .image-caption {
+	background-color: rgba(0, 0, 0, 0.7);
+	bottom: 6px;
+	box-sizing: border-box;
+	color: rgba(255, 255, 255, 0.87);
+	font-size: 11px;
+	padding: 4px 8px;
+	position: absolute;
+	text-align: center;
+	width: 100%;
+}
+
+/*
+
+
+/*
+|------------------------------------------------------------------------------
+| Edit Transactions
+|------------------------------------------------------------------------------
+*/
+
+.page[data-page=edittrans] .profile-header {
+	align-items: center;
+	background-color: #2E2B33;
+	background-image: url('../img/bg-user-profile.svg');
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 32px 16px;
+	text-align: center;
+}
+
+.page[data-page=edittrans] .profile-header .user-avatar {
+	border: 3px solid #FFFFFF;
+	height: 80px;
+	width: 80px;
+}
+
+.page[data-page=edittrans] .profile-header .user-name {
+	color: rgba(255, 255, 255, 0.87);
+	margin-bottom: 8px;
+	margin-top: 8px;
+}
+
+.page[data-page=edittrans] .profile-header .user-actions {
+	margin-top: 8px;
+	width: 100%;
+}
+
+.page[data-page=edittrans] .skills-list .skill-title {
+	font-size: 12px;
+	margin-right: 8px;
+	text-align: left;
+	width: 96px;
+}
+
+.page[data-page=edittrans] .skills-list .skill-proficiency {
+	font-size: 12px;
+	margin-left: 8px;
+	text-align: right;
+	width: 16px;
+}
+
+.page[data-page=edittrans] #tab-experience .list-block .item-title {
+	-webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-height: 20px;
+  margin-bottom: 6px;
+  white-space: normal;
+}
+
+.page[data-page=edittrans] #tab-experience .list-block .item-subtitle {
+	-webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-height: 18px;
+  margin-bottom: 6px;
+  white-space: normal;
+}
+
+.page[data-page=edittrans] #tab-portfolio .card .card-content-inner {
+	padding-bottom: 8px;
+	padding-top: 8px;
+}
+
+.page[data-page=edittrans] #tab-portfolio .image-gallery .image-wrapper {
+	margin-bottom: 3px;
+	margin-top: 8px;
+	position: relative;
+}
+
+.page[data-page=edittrans] #tab-portfolio .image-gallery img {
+	width: 100%;
+}
+
+.page[data-page=edittrans] #tab-portfolio .image-gallery .image-caption {
+	background-color: rgba(0, 0, 0, 0.7);
+	bottom: 6px;
+	box-sizing: border-box;
+	color: rgba(255, 255, 255, 0.87);
+	font-size: 11px;
+	padding: 4px 8px;
+	position: absolute;
+	text-align: center;
+	width: 100%;
+}
+
+/*

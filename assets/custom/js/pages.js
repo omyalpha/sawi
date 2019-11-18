@@ -7,10 +7,10 @@
 |------------------------------------------------------------------------------
 */
 myApp.onPageInit('*', function(page) {
+	$('.mchip').hide();
 	if (localStorage.getItem("token") !== null) {
 		var savedtoken = localStorage.getItem("token");
 		var dataString = 'savedtoken=' + savedtoken;
-		console.log("retrieved token: "+savedtoken);
 		// get user id
 		$.ajax({
 			beforeSend: function() { myApp.showIndicator(); },
@@ -44,20 +44,27 @@ myApp.onPageInit('*', function(page) {
 			   $('.phone1').html(obj[0].phone1);
 			   $('.phone2').html(obj[0].phone2);
 			   $('.email').html(obj[0].email);
+			   
+			   if (obj[0].newmessages!=0) {
+				  $('.mchip').show();
+				  $('.messagescount').html(obj[0].newmessages);
+			   }
 			},
 			error:function(XMLHttpRequest,textStatus,errorThrown){
 				var errormsg=XMLHttpRequest.responseText;
-				myApp.alert(errormsg);
+				if (errormsg=="" || errormsg==undefined) {
+					errormsg="Connection Error";
+				}
+				var toast = myApp.toast(errormsg);
+				toast.show();
 			}
 		});
-		console.log('username: '+localStorage.getItem("username"));
 		$('.onlyloggedin').show();
 		$('.onlyloggedout').hide();
 	} else {
 		$('.onlyloggedin').hide();
 		$('.onlyloggedout').show();
 		$('.myname').text("");
-		console.log("no token found");
 	}
 });
 
@@ -85,8 +92,6 @@ myApp.onPageInit('edit-profile', function(page) {
 	$$(".editBtn").on('click', function(e){
 		e.preventDefault();
 		var form = $("#editForm");
-		console.log('edit btn clicked');
-		console.log(form);
 		var savedtoken = localStorage.getItem("token");
 		
 		//run Ajax script here
@@ -101,7 +106,11 @@ myApp.onPageInit('edit-profile', function(page) {
 			},
 			error:function(XMLHttpRequest,textStatus,errorThrown){
 				var errormsg=XMLHttpRequest.responseText;
-				myApp.alert(errormsg);
+				if (errormsg=="" || errormsg==undefined) {
+					errormsg="Connection Error";
+				}
+				var toast = myApp.toast(errormsg);
+				toast.show();
 			}
 		});
 	});
@@ -135,7 +144,6 @@ myApp.onPageInit('home', function(page) {
 		type: "GET",
 		url: "http://webhosting.sd/sawi/php/getbranches.php",
 		success: function(data) {
-			console.log(data);
 			//var obj = JSON.parse(data);
 			
 			$('#ReceivingBranch').empty(); // clear the current elements in select box
@@ -180,7 +188,11 @@ myApp.onPageInit('home', function(page) {
 		},
 		error:function(XMLHttpRequest,textStatus,errorThrown){
 			var errormsg=XMLHttpRequest.responseText;
-			myApp.alert(errormsg);
+			if (errormsg=="" || errormsg==undefined) {
+				errormsg="Connection Error";
+			}
+			var toast = myApp.toast(errormsg);
+			toast.show();
 		}
 	});
 	
@@ -197,14 +209,17 @@ myApp.onPageInit('home', function(page) {
 				$('#scurrency').empty(); // clear the current elements in select box
 				for (var row in data) {
 					$('#scurrency').append($('<option></option>').attr('value', data[row].id).text(data[row].name));
-					console.log(data[row].id);
 				}
 				$('#payablenow').val('');
 				$('#tobereceived').val('');
 			},
 			error:function(XMLHttpRequest,textStatus,errorThrown){
 				var errormsg=XMLHttpRequest.responseText;
-				myApp.alert(errormsg);
+				if (errormsg=="" || errormsg==undefined) {
+					errormsg="Connection Error";
+				}
+				var toast = myApp.toast(errormsg);
+				toast.show();
 			}
 		});
 	});
@@ -222,14 +237,17 @@ myApp.onPageInit('home', function(page) {
 				$('#rcurrency').empty(); // clear the current elements in select box
 				for (var row in data) {
 					$('#rcurrency').append($('<option></option>').attr('value', data[row].id).text(data[row].name));
-					console.log(data[row].id);
 				}
 				$('#payablenow').val('');
 				$('#tobereceived').val('');
 			},
 			error:function(XMLHttpRequest,textStatus,errorThrown){
 				var errormsg=XMLHttpRequest.responseText;
-				myApp.alert(errormsg);
+				if (errormsg=="" || errormsg==undefined) {
+					errormsg="Connection Error";
+				}
+				var toast = myApp.toast(errormsg);
+				toast.show();
 			}
 		});
 	});
@@ -259,7 +277,6 @@ myApp.onPageInit('home', function(page) {
 					type: 'GET',
 					data: { sending: sending, receiving: receiving, payablenow: payablenow, receivecurrency: receivecurrency, sendcurrency: sendcurrency },
 					success: function(data) {
-						console.log(data);
 						var array = data.split("xx");
 						var amount=array[2];
 						localStorage.setItem("amount",amount);
@@ -272,9 +289,14 @@ myApp.onPageInit('home', function(page) {
 						}
 						
 					},
-					error: function(jqXHR, textStatus, errorThrown) {
-						alert(errorThrown);
-						//bootbox.alert('<i class="fa fa-times font-red"></i> '+errorThrown);
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						var errormsg=XMLHttpRequest.responseText;
+						if (errormsg=="" || errormsg==undefined) {
+							errormsg="Connection Error";
+						}
+						var toast = myApp.toast(errormsg);
+						toast.show();
+					
 						$('#payablenow').val('');
 						$('#tobereceived').val('');
 					},
@@ -308,7 +330,6 @@ myApp.onPageInit('home', function(page) {
 					type: 'GET',
 					data: { sending: sending, receiving: receiving, tobereceived: tobereceived, receivecurrency: receivecurrency, sendcurrency: sendcurrency },
 					success: function(data) {
-						console.log(data);
 						var array = data.split("xx");
 						var amount=array[2];
 						localStorage.setItem("amount",amount);
@@ -322,9 +343,11 @@ myApp.onPageInit('home', function(page) {
 							$('#payablenow').val(payablenow);
 						}
 					},
-					error: function(jqXHR, textStatus, errorThrown) {
-						alert(errorThrown);
-						//bootbox.alert('<i class="fa fa-times font-red"></i> '+errorThrown);
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						var errormsg=XMLHttpRequest.responseText;
+						if (errormsg=="" || errormsg==undefined) {
+							errormsg="Connection Error";
+						}
 						$('#payablenow').val('');
 						$('#tobereceived').val('');
 					},
@@ -376,7 +399,8 @@ myApp.onPageInit('home', function(page) {
 				url: 'createtrans.html'
 			});
 		} else {
-			alert('Please enter valid amounts');
+			var toast = myApp.toast('<i class="fa fa-times"></i> Please enter valid amounts');
+			toast.show();
 		}
 	});
 });
@@ -388,7 +412,6 @@ myApp.onPageInit('home', function(page) {
 */
 
 myApp.onPageInit('createtrans', function(page) {
-
 	$('#tobereceived2').val(localStorage.getItem("tobereceived"));
 	$('#payablenow2').val(localStorage.getItem("payablenow"));
 	$('.rcurrency').html(localStorage.getItem("receivecurrency"));
@@ -415,7 +438,6 @@ myApp.onPageInit('createtrans', function(page) {
 					type: 'GET',
 					data: { sending: sending, receiving: receiving, payablenow: payablenow, receivecurrency: receivecurrency, sendcurrency: sendcurrency, payment: payment, settlement: settlement },
 					success: function(data) {
-						console.log(data);
 						var array = data.split("xx");
 						var amount=array[2];
 						localStorage.setItem("amount",amount);
@@ -428,9 +450,12 @@ myApp.onPageInit('createtrans', function(page) {
 						}
 						
 					},
-					error: function(jqXHR, textStatus, errorThrown) {
-						alert(errorThrown);
-						//bootbox.alert('<i class="fa fa-times font-red"></i> '+errorThrown);
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						var errormsg=XMLHttpRequest.responseText;
+						if (errormsg=="" || errormsg==undefined) {
+							errormsg="Connection Error";
+						}
+						
 						$('#payablenow2').val('');
 						$('#tobereceived2').val('');
 					},
@@ -466,7 +491,6 @@ myApp.onPageInit('createtrans', function(page) {
 					type: 'GET',
 					data: { sending: sending, receiving: receiving, tobereceived: tobereceived, receivecurrency: receivecurrency, sendcurrency: sendcurrency, payment: payment, settlement: settlement },
 					success: function(data) {
-						console.log(data);
 						var array = data.split("xx");
 						var amount=array[2];
 						localStorage.setItem("amount",amount);
@@ -480,9 +504,12 @@ myApp.onPageInit('createtrans', function(page) {
 							$('#payablenow2').val(payablenow);
 						}
 					},
-					error: function(jqXHR, textStatus, errorThrown) {
-						alert(errorThrown);
-						//bootbox.alert('<i class="fa fa-times font-red"></i> '+errorThrown);
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						var errormsg=XMLHttpRequest.responseText;
+						if (errormsg=="" || errormsg==undefined) {
+							errormsg="Connection Error";
+						}
+						
 						$('#payablenow2').val('');
 						$('#tobereceived2').val('');
 					},
@@ -518,7 +545,6 @@ myApp.onPageInit('createtrans', function(page) {
 				type: 'GET',
 				data: { sending: sending, receiving: receiving, payment: payment, settlement: settlement, amount: amount, receivecurrency: receivecurrency, sendcurrency: sendcurrency },
 				success: function(data) {
-					console.log(data);
 					var array = data.split("xx");
 					var payablenow=array[2];
 					var tobereceived=array[3];
@@ -527,9 +553,13 @@ myApp.onPageInit('createtrans', function(page) {
 					$('#tobereceived2').val(tobereceived);
 					
 					},
-				error: function(jqXHR, textStatus, errorThrown) {
-					alert(errorThrown);
-					//bootbox.alert('<i class="fa fa-times font-red"></i> '+errorThrown);
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+						var errormsg=XMLHttpRequest.responseText;
+						if (errormsg=="" || errormsg==undefined) {
+							errormsg="Connection Error";
+						}
+						var toast = myApp.toast(errormsg);
+						toast.show();
 				},
 				beforeSend: function(){
 					$(".submitTransBtn").attr("disabled", true);
@@ -554,14 +584,19 @@ myApp.onPageInit('createtrans', function(page) {
 				data: form.serialize(), // serializes the form's elements.
 				success: function(data) {
 					localStorage.removeItem("SendingBranch"); // end ongoing transaction
-					myApp.alert('Transaction Submitted!');
+					var toast = myApp.toast('<i class="fa fa-check"></i> Transaction Submitted!');
+					toast.show();
 					mainView.router.load({
 						url: 'transactions.html'
 					});
 				},
 				error:function(XMLHttpRequest,textStatus,errorThrown){
 					var errormsg=XMLHttpRequest.responseText;
-					myApp.alert(errormsg);
+					if (errormsg=="" || errormsg==undefined) {
+						errormsg="Connection Error";
+					}
+					var toast = myApp.toast(errormsg);
+					toast.show();
 				}
 			});
 			
@@ -575,12 +610,486 @@ myApp.onPageInit('createtrans', function(page) {
 
 /*
 |------------------------------------------------------------------------------
+| Transaction Payments
+|------------------------------------------------------------------------------
+*/
+
+myApp.onPageInit('transpayments', function(page) {
+	var getid = page.query.id;
+	var href="addpayment.html?id="+getid;
+	$('#addpayment').attr("href", href);
+	$('#addpayment').hide();
+	
+	if (localStorage.getItem("token") !== null) {
+		var savedtoken = localStorage.getItem("token");
+		var dataString = 'token=' + savedtoken + '&id=' + getid;
+		window.htmlText="";
+		// get user id
+		$.ajax({
+			beforeSend: function() { myApp.showIndicator(); },
+			complete: function(){ myApp.hideIndicator(); },
+			type: "GET",
+			url: "http://webhosting.sd/sawi/php/transpayments.php",
+			data: dataString, // send token to grab data
+			success: function(data) {
+				var data = JSON.parse(data);
+				console.log(data);
+				$('.transcode').html(data[0].transcode);
+				$.each(data, function(i, field){
+					if (i>0) { // skip first row
+						htmlText += '<tr>';
+						htmlText += '<td class="numeric-cell">'+data[i].sendcurrency+' '+data[i].amount+'</td>';
+						htmlText += '<td class="numeric-cell">'+data[i].paymentinfo+'</td>';
+						htmlText += '<td class="numeric-cell">'+data[i].created+'</td>';
+						htmlText += '<td class="numeric-cell">'+data[i].createdby+'</td>';
+						htmlText += '<td class="numeric-cell">'+data[i].approved+'</td>';
+						htmlText += '</tr>';
+						$('#paymentslist').append(htmlText);
+						htmlText='';
+					}
+				});
+
+				if (data[0].tapproved!=2) { // not rejected
+					$("#addpayment").show();
+				}				
+			},
+			error:function(XMLHttpRequest,textStatus,errorThrown){
+				var errormsg=XMLHttpRequest.responseText;
+				if (errormsg=="" || errormsg==undefined) {
+					errormsg="Connection Error";
+				}
+				var toast = myApp.toast(errormsg);
+				toast.show();
+			}
+		});
+	} else {
+		mainView.loadPage('home.html');
+	}
+});
+
+/*
+|------------------------------------------------------------------------------
+| Add Payment
+|------------------------------------------------------------------------------
+*/
+
+myApp.onPageInit('addpayment', function(page) {
+	var getid = page.query.id;
+	
+	if (localStorage.getItem("token") !== null) {
+		var savedtoken = localStorage.getItem("token");
+		var dataString = 'token=' + savedtoken + '&id=' + getid;
+		console.log(getid);
+		window.htmlText="";
+		// get user id
+		$.ajax({
+			beforeSend: function() { myApp.showIndicator(); },
+			complete: function(){ myApp.hideIndicator(); },
+			type: "GET",
+			url: "http://webhosting.sd/sawi/php/transdetails.php",
+			data: dataString, // send token to grab data
+			success: function(data) {
+				console.log(data);
+				var data = JSON.parse(data);
+				$('.transcode').html(data[0].code);
+				$('.scurrency').html(data[0].sendcurrency);
+			},
+			error:function(XMLHttpRequest,textStatus,errorThrown){
+				var errormsg=XMLHttpRequest.responseText;
+				if (errormsg=="" || errormsg==undefined) {
+					errormsg="Connection Error";
+				}
+				var toast = myApp.toast(errormsg);
+				toast.show();
+			}
+		});
+	} else {
+		mainView.loadPage('home.html');
+	}
+
+	$$(".addPaymentBtn").on('click', function(e){
+		e.preventDefault();
+		if (localStorage.getItem("token") !== null) {
+			var savedtoken = localStorage.getItem("token");
+			
+			var form = $("#addPaymentForm");
+			var paymentamount=$('#paymentamount').val();
+			//submit
+			if (!isNaN(paymentamount)) {
+				$.ajax({
+					beforeSend: function() { myApp.showIndicator(); },
+					complete: function(){ myApp.hideIndicator(); },
+					type: "GET",
+					url: "http://webhosting.sd/sawi/php/addpayment.php?token=" + savedtoken + "&id=" + getid,
+					data: form.serialize(), // serializes the form's elements.
+					success: function(data) {
+						var toast = myApp.toast('<i class="fa fa-check"></i> Payment Added!');
+						toast.show();
+						mainView.router.load({
+							url: 'transpayments.html?id='+getid
+						});
+					},
+					error:function(XMLHttpRequest,textStatus,errorThrown){
+						var errormsg=XMLHttpRequest.responseText;
+						if (errormsg=="" || errormsg==undefined) {
+							errormsg="Connection Error";
+						}
+						var toast = myApp.toast(errormsg);
+						toast.show();
+					}
+				});
+			} else {
+				$('#paymentamount').val('');
+			}
+			
+		} else {
+			mainView.router.load({
+				url: 'signup.html'
+			});
+		}
+	});
+});
+
+/*
+|------------------------------------------------------------------------------
+| Balance
+|------------------------------------------------------------------------------
+*/
+
+myApp.onPageInit('balance', function(page) {
+	if (localStorage.getItem("token") !== null) {
+		var savedtoken = localStorage.getItem("token");
+		var dataString = 'token=' + savedtoken;
+		window.htmlText="";
+		// get user id
+		$.ajax({
+			beforeSend: function() { myApp.showIndicator(); },
+			complete: function(){ myApp.hideIndicator(); },
+			type: "GET",
+			url: "http://webhosting.sd/sawi/php/balance.php",
+			data: dataString, // send token to grab data
+			success: function(data) {
+				var data = JSON.parse(data);
+				$.each(data, function(i, field){
+					htmlText += '<tr>';
+					htmlText += '<td class="numeric-cell">'+data[i].code+'</td>';
+					htmlText += '<td class="numeric-cell">'+data[i].rname+'</td>';
+					htmlText += '<td class="numeric-cell">'+data[i].sendcurrency+' '+data[i].payablenow.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'</td>';
+					htmlText += '<td class="numeric-cell">'+data[i].created+'</td>';
+					htmlText += '<td class="numeric-cell">'+data[i].sendcurrency+' '+data[i].owes+'</td>';
+					htmlText += '<td class="numeric-cell"><a href="transdetails.html?id='+data[i].id+'">Details</a></td>';
+					htmlText += '</tr>';
+					$('#translist').append(htmlText);
+					htmlText='';
+				});				
+			},
+			error:function(XMLHttpRequest,textStatus,errorThrown){
+				var errormsg=XMLHttpRequest.responseText;
+				if (errormsg=="" || errormsg==undefined) {
+					errormsg="Connection Error";
+				}
+				var toast = myApp.toast(errormsg);
+				toast.show();
+			}
+		});
+	} else {
+		mainView.loadPage('home.html');
+	}
+});
+
+/*
+|------------------------------------------------------------------------------
+| Transactions
+|------------------------------------------------------------------------------
+*/
+
+myApp.onPageInit('transactions', function(page) {
+	if (localStorage.getItem("token") !== null) {
+		var savedtoken = localStorage.getItem("token");
+		var dataString = 'token=' + savedtoken;
+		window.htmlText="";
+		// get user id
+		$.ajax({
+			beforeSend: function() { myApp.showIndicator(); },
+			complete: function(){ myApp.hideIndicator(); },
+			type: "GET",
+			url: "http://webhosting.sd/sawi/php/transactions2.php",
+			data: dataString, // send token to grab data
+			success: function(data) {
+				var data = JSON.parse(data);
+				$.each(data, function(i, field){
+					htmlText += '<tr>';
+					htmlText += '<td class="numeric-cell">'+data[i].rname+'</td>';
+					htmlText += '<td class="numeric-cell">'+data[i].sendcurrency+' '+data[i].payablenow.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'</td>';
+					htmlText += '<td class="numeric-cell">'+data[i].approvedtext+'</td>';
+					htmlText += '<td class="numeric-cell">'+data[i].settledtext+'</td>';
+					htmlText += '<td class="numeric-cell">'+data[i].created+'</td>';
+					htmlText += '<td class="numeric-cell"><a href="transdetails.html?id='+data[i].id+'">Details</a></td>';
+					htmlText += '<td class="numeric-cell"><a class="button button-fill color-teal" href="transpayments.html?id='+data[i].id+'">Payments</a></td>';
+					htmlText += '</tr>';
+					$('#translist').append(htmlText);
+					htmlText='';
+				});				
+			},
+			error:function(XMLHttpRequest,textStatus,errorThrown){
+				var errormsg=XMLHttpRequest.responseText;
+				if (errormsg=="" || errormsg==undefined) {
+					errormsg="Connection Error";
+				}
+				var toast = myApp.toast(errormsg);
+				toast.show();
+			}
+		});
+	} else {
+		mainView.loadPage('home.html');
+	}
+});
+
+/*
+|------------------------------------------------------------------------------
+| Transactions Details
+|------------------------------------------------------------------------------
+*/
+
+myApp.onPageInit('transdetails', function(page) {
+	var getid = page.query.id;
+	$('.notsettled').hide();
+	$('.settled').hide();
+	
+	if (localStorage.getItem("token") !== null) {
+		var savedtoken = localStorage.getItem("token");
+		var dataString = 'token=' + savedtoken + '&id=' + getid;
+		var href="edittrans.html?id="+getid;
+		$('#edittranslik').attr("href", href);
+		
+		// get user id
+		$.ajax({
+			beforeSend: function() { myApp.showIndicator(); },
+			complete: function(){ myApp.hideIndicator(); },
+			type: "GET",
+			url: "http://webhosting.sd/sawi/php/transdetails.php",
+			data: dataString, // send token to grab data
+			success: function(data) {
+				var data = JSON.parse(data);
+				$('#rname3').html(data[0].rname);
+				$('#rnationality3').html(data[0].rnationality);
+				$('#raddress3').html(data[0].raddress);
+				$('#rphone13').html(data[0].rphone1);
+				$('#rphone23').html(data[0].rphone2);
+				$('#transactioncode3').html(data[0].code);
+				$('#sbranchname3').html(data[0].sbranchname);
+				$('#payablenow3').html(data[0].sendcurrency+' '+data[0].payablenow.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+				$('#rbranchname3').html(data[0].rbranchname);
+				$('#tobereceived3').html(data[0].receivecurrency+' '+data[0].tobereceived.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+				$('#notes3').html(data[0].notes);
+				$('#created3').html(data[0].created);
+				$('#notes3').html(data[0].notes);
+				$('#createdby3').html(data[0].createdby);
+				$('#paidstatustext3').html(data[0].paidstatustext);
+				$('#approvedtext3').html(data[0].approvedtext);
+				$('#settledtext3').html(data[0].settledtext);
+				
+				if (data[0].settled==0) { // not settled, not rejected
+					$('.notsettled').show();
+					$('.settled').hide();
+				} else { // if settled or rejected, show linkless button
+					$('.notsettled').hide();
+					$('.settled').show();
+				}
+			},
+			error:function(XMLHttpRequest,textStatus,errorThrown){
+				var errormsg=XMLHttpRequest.responseText;
+				if (errormsg=="" || errormsg==undefined) {
+					errormsg="Connection Error";
+				}
+				var toast = myApp.toast(errormsg);
+				toast.show();
+			}
+		});
+	} else {
+		mainView.loadPage('home.html');
+	}
+});
+
+/*
+|------------------------------------------------------------------------------
+| Edit Transactions
+|------------------------------------------------------------------------------
+*/
+
+myApp.onPageInit('edittrans', function(page) {
+	var getid = page.query.id;
+	$('.canceltrans').hide();
+	if (localStorage.getItem("token") !== null) {
+		var savedtoken = localStorage.getItem("token");
+		var dataString = 'token=' + savedtoken + '&id=' + getid;
+		
+		// get user id
+		$.ajax({
+			beforeSend: function() { myApp.showIndicator(); },
+			complete: function(){ myApp.hideIndicator(); },
+			type: "GET",
+			url: "http://webhosting.sd/sawi/php/transdetails.php",
+			data: dataString, // send token to grab data
+			success: function(data) {
+				var data = JSON.parse(data);
+				$('#rname4').val(data[0].rname);
+				$('#rnationality4').val(data[0].rnationality);
+				$('#raddress4').val(data[0].raddress);
+				$('#rphone14').val(data[0].rphone1);
+				$('#rphone24').val(data[0].rphone2);
+				$('#notes4').val(data[0].notes);
+				
+				$('#transactioncode4').html(data[0].code);
+				$('#sbranchname4').html(data[0].sbranchname);
+				$('#payablenow4').html(data[0].sendcurrency+' '+data[0].payablenow.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+				$('#rbranchname4').html(data[0].rbranchname);
+				$('#tobereceived4').html(data[0].receivecurrency+' '+data[0].tobereceived.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+				
+				console.log(data[0].settled+'xx'+data[0].approved)
+				if (data[0].settled==0 && data[0].approved!=2) { // not settled and not rejected
+					// show the cancel icon
+					$('.canceltrans').show();
+				}
+				
+			},
+			error:function(XMLHttpRequest,textStatus,errorThrown){
+				var errormsg=XMLHttpRequest.responseText;
+				if (errormsg=="" || errormsg==undefined) {
+					errormsg="Connection Error";
+				}
+				var toast = myApp.toast(errormsg);
+				toast.show();
+			}
+		});
+	} else {
+		mainView.loadPage('home.html');
+	}
+	
+	$$(".editTransBtn").on('click', function(e){
+		e.preventDefault();
+		if (localStorage.getItem("token") !== null) {
+			var form = $("#editTransForm");
+			//submit transaction
+			$.ajax({
+				beforeSend: function() { myApp.showIndicator(); },
+				complete: function(){ myApp.hideIndicator(); },
+				type: "GET",
+				url: "http://webhosting.sd/sawi/php/edittrans.php?transid="+getid+"&token="+localStorage.getItem('token'),
+				data: form.serialize(), // serializes the form's elements.
+				success: function(data) {
+					var toast = myApp.toast('<i class="fa fa-check"></i> Transaction Edited!');
+					toast.show();
+					mainView.router.load({
+						url: 'transdetails.html?id='+getid
+					});
+				},
+				error:function(XMLHttpRequest,textStatus,errorThrown){
+					var errormsg=XMLHttpRequest.responseText;
+					if (errormsg=="" || errormsg==undefined) {
+						errormsg="Connection Error";
+					}
+					var toast = myApp.toast(errormsg);
+					toast.show();
+				}
+			});
+			
+		} else {
+			mainView.router.load({
+				url: 'signup.html'
+			});
+		}
+	});
+	
+	$$(".canceltrans").on('click', function(e){
+		e.preventDefault();
+		if (localStorage.getItem("token") !== null) {
+			//submit transaction
+			$.ajax({
+				beforeSend: function() { myApp.showIndicator(); },
+				complete: function(){ myApp.hideIndicator(); },
+				type: "GET",
+				url: "http://webhosting.sd/sawi/php/canceltrans.php?transid="+getid+"&token="+localStorage.getItem('token'),
+				success: function(data) {
+					var toast = myApp.toast('<i class="fa fa-check"></i> Transaction Cancelled!');
+					toast.show();
+					mainView.router.load({
+						url: 'transdetails.html?id='+getid
+					});
+				},
+				error:function(XMLHttpRequest,textStatus,errorThrown){
+					var errormsg=XMLHttpRequest.responseText;
+					if (errormsg=="" || errormsg==undefined) {
+						errormsg="Connection Error";
+					}
+					var toast = myApp.toast(errormsg);
+					toast.show();
+				}
+			});
+			
+		} else {
+			mainView.router.load({
+				url: 'signup.html'
+			});
+		}
+	});
+});
+
+/*
+|------------------------------------------------------------------------------
+| Messages
+|------------------------------------------------------------------------------
+*/
+
+myApp.onPageInit('messages', function(page) {
+	if (localStorage.getItem("token") !== null) {
+		var savedtoken = localStorage.getItem("token");
+		var dataString = 'token=' + savedtoken;
+		window.htmlText="";
+		// get user id
+		$.ajax({
+			beforeSend: function() { myApp.showIndicator(); },
+			complete: function(){ myApp.hideIndicator(); },
+			type: "GET",
+			url: "http://webhosting.sd/sawi/php/messages.php",
+			data: dataString, // send token to grab data
+			success: function(data) {
+				var data = JSON.parse(data);
+				$.each(data, function(i, field){
+					htmlText += '<li class="item-content">';
+					htmlText += '<div class="item-inner">';
+					htmlText += '<div class="item-title-row">';
+					htmlText += '<div class="item-title">'+data[i].text+'</div>';
+					htmlText += '</div>';
+					htmlText += '<div class="item-subtitle">'+data[i].date+'</div>';
+					htmlText += '</div>';
+					htmlText += '</li>';
+
+					$('#messages').append(htmlText);
+					htmlText='';
+				});				
+			},
+			error:function(XMLHttpRequest,textStatus,errorThrown){
+				var errormsg=XMLHttpRequest.responseText;
+				if (errormsg=="" || errormsg==undefined) {
+					errormsg="Connection Error";
+				}
+				var toast = myApp.toast(errormsg);
+				toast.show();
+			}
+		});
+	} else {
+		mainView.loadPage('home.html');
+	}
+});
+
+/*
+|------------------------------------------------------------------------------
 | Log In
 |------------------------------------------------------------------------------
 */
 
 myApp.onPageInit('login', function(page) {
-	console.log('login page');
 	
 	/* Show|Hide Password */
 	$$('.page[data-page=login] [data-action=show-hide-password]').on('click', function() {
@@ -621,8 +1130,6 @@ myApp.onPageInit('login', function(page) {
 		},
 		submitHandler: function(form) {
 			var form = $("#loginForm");
-			console.log('login btn clicked');
-			console.log(form);
 			
 			//run Ajax script here
 			$.ajax({
@@ -635,7 +1142,6 @@ myApp.onPageInit('login', function(page) {
 					localStorage.setItem("token",data);
 					$('.onlyloggedin').show();
 					$('.onlyloggedout').hide();
-					console.log("new token:"+data);
 					if (localStorage.getItem("SendingBranch") !== null) { // there is an ongoing transaction
 						mainView.loadPage('createtrans.html');
 					} else {
@@ -649,7 +1155,8 @@ myApp.onPageInit('login', function(page) {
 					} else {
 						errormsg="Connection Error!";
 					}
-					myApp.alert(errormsg);
+					var toast = myApp.toast(errormsg);
+					toast.show();
 				}
 			});
 			/*
@@ -746,7 +1253,11 @@ myApp.onPageInit('signup', function(page) {
 				},
 				error:function(XMLHttpRequest,textStatus,errorThrown){
 					var errormsg=XMLHttpRequest.responseText;
-					myApp.alert(errormsg);
+					if (errormsg=="" || errormsg==undefined) {
+						errormsg="Connection Error";
+					}
+					var toast = myApp.toast(errormsg);
+					toast.show();
 				}
 			});
 		}
@@ -789,12 +1300,17 @@ myApp.onPageInit('forgot-password', function(page) {
 				url: "http://webhosting.sd/sawi/php/resetpass.php",
 				data: form.serialize(), // serializes the form's elements.
 				success: function(data) {
-					myApp.alert("Please check your email on file for new password");
+					var toast = myApp.toast('<i class="fa fa-check"></i> Please check your email on file for new password');
+					toast.show();
 					mainView.loadPage('home.html');
 				},
 				error:function(XMLHttpRequest,textStatus,errorThrown){
 					var errormsg=XMLHttpRequest.responseText;
-					myApp.alert(errormsg);
+					if (errormsg=="" || errormsg==undefined) {
+						errormsg="Connection Error";
+					}
+					var toast = myApp.toast(errormsg);
+					toast.show();
 				}
 			});
 		}
